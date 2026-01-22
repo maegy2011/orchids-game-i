@@ -23,6 +23,42 @@ const blobShapes = [
   "rounded-[30%_70%_50%_50%/50%_30%_70%_50%]",
 ];
 
+const Bubble = ({ i }: { i: number }) => {
+  const size = Math.random() * 60 + 20;
+  const left = Math.random() * 100;
+  const duration = Math.random() * 10 + 10;
+  const delay = Math.random() * 20;
+
+  return (
+    <motion.div
+      initial={{ y: "110vh", x: `${left}%`, scale: 0, opacity: 0 }}
+      animate={{
+        y: "-10vh",
+        scale: [0, 1, 1.1, 1.3, 0],
+        opacity: [0, 0.6, 0.6, 0.8, 0],
+      }}
+      transition={{
+        duration: duration,
+        repeat: Infinity,
+        delay: delay,
+        ease: "linear",
+        times: [0, 0.1, 0.8, 0.95, 1],
+      }}
+      className="absolute rounded-full pointer-events-none"
+      style={{
+        width: size,
+        height: size,
+        background: "radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 40%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0.4) 100%)",
+        boxShadow: "inset -5px -5px 15px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(255, 255, 255, 0.2)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        backdropFilter: "blur(2px)",
+      }}
+    >
+      <div className="absolute top-[15%] left-[15%] w-[25%] h-[25%] bg-white/60 rounded-full blur-[2px]" />
+    </motion.div>
+  );
+};
+
 export default function Home() {
   const [currentSection, setCurrentSection] = useState<Section>("home");
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
@@ -84,27 +120,8 @@ export default function Home() {
       `}</style>
 
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full opacity-20"
-            style={{
-              width: Math.random() * 100 + 50,
-              height: Math.random() * 100 + 50,
-              background: `hsl(${Math.random() * 360}, 70%, 70%)`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+        {[...Array(30)].map((_, i) => (
+          <Bubble key={i} i={i} />
         ))}
       </div>
 
@@ -403,3 +420,4 @@ export default function Home() {
     </div>
   );
 }
+ 
